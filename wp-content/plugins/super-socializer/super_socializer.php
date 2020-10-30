@@ -3,7 +3,7 @@
 Plugin Name: Super Socializer
 Plugin URI: https://super-socializer-wordpress.heateor.com
 Description: A complete 360 degree solution to provide all the social features like Social Login, Social Commenting, Social Sharing, Social Media follow and more
-Version: 7.13.4
+Version: 7.13.5
 Author: Team Heateor
 Author URI: https://www.heateor.com
 Text Domain: super-socializer
@@ -11,7 +11,7 @@ Domain Path: /languages
 License: GPL2+
 */
 defined('ABSPATH') or die("Cheating........Uh!!");
-define('THE_CHAMP_SS_VERSION', '7.13.4');
+define('THE_CHAMP_SS_VERSION', '7.13.5');
 
 require 'helper.php';
 
@@ -234,6 +234,7 @@ function the_champ_connect(){
 		    if($data && isset($data->response) && isset($data->response->players) && is_array($data->response->players)){
 				$steamProfileData = $data->response->players;
 				if(isset($steamProfileData[0]) && isset($steamProfileData[0]->steamid)){
+					$steamProfileData = apply_filters('heateor_ss_steam_login_filter', $steamProfileData, $theChampLoginOptions);
 					$steamRedirect = heateor_ss_validate_url($_GET['SuperSocializerSteamAuth']) !== false ? esc_url(trim($_GET['SuperSocializerSteamAuth'])) : '';
 					$profileData = the_champ_sanitize_profile_data($steamProfileData[0], 'steam');
 					if(strpos($steamRedirect, 'heateorMSEnabled') !== false){

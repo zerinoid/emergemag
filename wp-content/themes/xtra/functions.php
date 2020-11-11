@@ -37,9 +37,9 @@ if ( ! class_exists( 'Codevz_Theme' ) ) {
 			self::$is_rtl 	= ( self::option( 'rtl' ) || is_rtl() || isset( $_GET['rtl'] ) );
 
 			// Include files.
-			get_template_part( 'classes/class-dashboard' );
-			get_template_part( 'classes/class-settings' );
 			get_template_part( 'classes/class-tgmpa' );
+			get_template_part( 'classes/class-settings' );
+			get_template_part( 'classes/class-dashboard' );
 
 			// Actions.
 			add_action( 'after_setup_theme', [ $this, 'theme_setup' ] );
@@ -699,12 +699,12 @@ if ( ! class_exists( 'Codevz_Theme' ) ) {
 					<?php if( $prevPost ) { ?>
 						<li class="previous">
 							<?php $prevthumbnail = get_the_post_thumbnail( $prevPost->ID, 'thumbnail' ); ?>
-							<?php previous_post_link( '%link', '<i class="fa fa-angle-' . ( self::$is_rtl ? 'right' : 'left' ) . '"></i><h4><small>' . esc_html( do_shortcode( self::option( 'prev_post' ) ) ) . '</small>%title</h4>' ); ?>
+							<?php previous_post_link( '%link', '<i class="fa fa-angle-' . ( self::$is_rtl ? 'right' : 'left' ) . '"></i><h4><small>' . esc_html( do_shortcode( self::option( 'prev_' . $cpt, self::option( 'prev_post'  ) ) ) ) . '</small>%title</h4>' ); ?>
 						</li>
 					<?php } if( $nextPost ) { ?>
 						<li class="next">
 							<?php $nextthumbnail = get_the_post_thumbnail( $nextPost->ID, 'thumbnail' ); ?>
-							<?php next_post_link( '%link', '<h4><small>' . esc_html( do_shortcode( self::option( 'next_post' ) ) ) . '</small>%title</h4><i class="fa fa-angle-' . ( self::$is_rtl ? 'left' : 'right' ) . '"></i>' ); ?>
+							<?php next_post_link( '%link', '<h4><small>' . esc_html( do_shortcode( self::option( 'next_' . $cpt, self::option( 'next_post' ) ) ) ) . '</small>%title</h4><i class="fa fa-angle-' . ( self::$is_rtl ? 'left' : 'right' ) . '"></i>' ); ?>
 						</li>
 					<?php } 
 
@@ -1290,6 +1290,7 @@ if ( ! class_exists( 'Codevz_Theme' ) ) {
 
 				// Start
 				if ( $left || $center || $right ) {
+
 					echo '<div class="' . esc_attr( $id . $num . ( $center ? ' have_center' : '' ) . $shape . $sticky . $menufx . $submenufx ) . '">';
 					if ( $args['row'] ) {
 						echo '<div class="row elms_row"><div class="clr">';
@@ -1303,6 +1304,7 @@ if ( ! class_exists( 'Codevz_Theme' ) ) {
 						echo '</div></div>';
 					}
 					echo '</div>';
+
 				}
 
 				// After mobile header

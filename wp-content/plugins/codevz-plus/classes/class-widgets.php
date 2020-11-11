@@ -2868,8 +2868,27 @@ if ( ! class_exists( 'CodevzPostsList' ) ) {
 		}
 
 		public function form( $data ) {
-		// outputs the options form on admin
-			$defaults = array( 'title' => 'General Posts', 'show' => '3', 'orderby'=> 'date', 'order'=>'DESC', 'catin' => '', 'catout' => '', 'pagecount' => '3', 'taxis' => '', 'taxterm' => '', 'ptipe' => 'post', 'metakey'=> '', 'metavalue' => '', 'metacompare' => '=', 'widgetidentifier' => '', 'widgetclassifier' => '', 'readmoretitle' => '', 'readmorelink' => '');//'term' => ' ', 
+
+			$defaults = array(
+				'title' => esc_html__( 'General Posts', 'codevz' ),
+				'show' => '3',
+				'orderby'=> 'date',
+				'order'=>'DESC',
+				'catin' => '',
+				'catout' => '',
+				'pagecount' => '3',
+				'taxis' => '',
+				'taxterm' => '',
+				'ptipe' => 'post',
+				'metakey'=> '',
+				'metavalue' => '',
+				'metacompare' => '=',
+				'widgetidentifier' => '',
+				'widgetclassifier' => '',
+				'readmoretitle' => '',
+				'readmorelink' => ''
+			);
+
 			$data = wp_parse_args( (array) $data, $defaults );
 			$title = $data['title'];
 			$show  = $data['show'];
@@ -2897,13 +2916,13 @@ if ( ! class_exists( 'CodevzPostsList' ) ) {
 			
 			?>
 
-			<p>Title <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $title ); ?>" /></p>
+			<p><?php esc_html_e( 'Title', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $title ); ?>" /></p>
 			
-			<p>ID Tag <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'widgetidentifier' ) ); ?>" value="<?php echo esc_attr($post_widgeid); ?>" /></p>
+			<p><?php esc_html_e( 'ID', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'widgetidentifier' ) ); ?>" value="<?php echo esc_attr($post_widgeid); ?>" /></p>
 			
-			<p>Class Tag <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'widgetclassifier' ) ); ?>" value="<?php echo esc_attr($post_widgeclass); ?>" /></p>
+			<p><?php esc_html_e( 'Class', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'widgetclassifier' ) ); ?>" value="<?php echo esc_attr($post_widgeclass); ?>" /></p>
 			
-			<p>Choose post type: 	
+			<p><?php esc_html_e( 'Post type', 'codevz' ); ?> 	
 				<select name="<?php echo esc_attr( $this->get_field_name('ptipe') ); ?>"><?php
 			
 				$datype = get_post_types(array('public'=>true), 'objects'); 
@@ -2915,12 +2934,11 @@ if ( ! class_exists( 'CodevzPostsList' ) ) {
 				?>
 				</select>
 			</p>
-			
-			
-			<p>How many Articles to show total. Defaults to 3. <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'show' ) ); ?>" value="<?php echo esc_attr( $show ); ?>" /></p>
-			<p>How many artles to show at once. Defaults to 3 (note: this is not used.  It is available for you to hook into in order to separate display into tabs or whatever). <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'pagecount' ) ); ?>" value="<?php echo esc_attr( $pagecount ); ?>" /></p>
-	        <p>Order By
-			
+
+			<p><?php esc_html_e( 'Number of posts', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'show' ) ); ?>" value="<?php echo esc_attr( $show ); ?>" /></p>
+			<p><?php esc_html_e( 'Posts to show at once', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'pagecount' ) ); ?>" value="<?php echo esc_attr( $pagecount ); ?>" /></p>
+	        <p><?php esc_html_e( 'Order by', 'codevz' ); ?>
+
 	            <select name="<?php echo esc_attr( $this->get_field_name( 'orderby' ) ); ?>">
 	                <?php
 	                foreach( $orbe as $orb ){
@@ -2929,20 +2947,20 @@ if ( ! class_exists( 'CodevzPostsList' ) ) {
 	                <?php } ?>
 	            </select>
 	        </p>
-			
-			<p>Order
-			
+
+			<p><?php esc_html_e( 'Order', 'codevz' ); ?>
+
 	            <select name="<?php echo esc_attr( $this->get_field_name( 'order' ) ); ?>">
-	                    <option value="ASC" <?php selected( $order, 'ASC'); ?>>Ascending</option>
-						<option value="DESC" <?php selected( $order, 'DESC'); ?>>Descending</option>
+	                    <option value="ASC" <?php selected( $order, 'ASC'); ?>><?php esc_html_e( 'Ascending', 'codevz' ); ?></option>
+						<option value="DESC" <?php selected( $order, 'DESC'); ?>><?php esc_html_e( 'Descending', 'codevz' ); ?></option>
 	             </select>
 	        </p>
-			<p>USE ONLY ONE OPTION BELOW</p>
-			<p>Category Includes <small>(category id's, comma delimited)</small> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'catin' ) ); ?>" value="<?php echo esc_attr( $post_catin ); ?>" /></p>
-			
-			<p>Category Excludes <small>(category id's, comma delimited)</small> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'catout' ) ); ?>" value="<?php echo esc_attr( $post_catout ); ?>" /></p>
-			
-			<p>Query by Taxonomy, Choose taxonomy <select name="<?php echo esc_attr( $this->get_field_name('taxis') ); ?>"><?php
+			<p><?php esc_html_e( 'USE ONLY ONE OPTION BELOW', 'codevz' ); ?></p>
+			<p><?php esc_html_e( 'Category ID include', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'catin' ) ); ?>" value="<?php echo esc_attr( $post_catin ); ?>" /></p>
+
+			<p><?php esc_html_e( 'Category ID exclude', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'catout' ) ); ?>" value="<?php echo esc_attr( $post_catout ); ?>" /></p>
+
+			<p><?php esc_html_e( 'Taxonomy', 'codevz' ); ?> <select name="<?php echo esc_attr( $this->get_field_name('taxis') ); ?>"><?php
 			
 				$dataxes = get_object_taxonomies($post_typed, 'objects');
 				foreach($dataxes as $atax){
@@ -2953,16 +2971,15 @@ if ( ! class_exists( 'CodevzPostsList' ) ) {
 			?>
 			</select>
 			<br/>
-			Then enter the term slug 
+			<?php esc_html_e( 'Enter the term slug', 'codevz' ); ?>
 			<input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'taxterm' ) ); ?>" value="<?php echo esc_attr( $post_taxterm ); ?>" />
 			</p>
 			
-			<p>For tax queries, this widget interface only supports one tax query, for multiple use wpr_adjust_genposts_query filter<br/>
-			Meta Key: <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'metakey' ) ); ?>" value="<?php echo esc_attr( $post_metavalue ); ?>" />
+			<?php esc_html_e( 'Meta key', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'metakey' ) ); ?>" value="<?php echo esc_attr( $post_metavalue ); ?>" />
 			<br/>
-			Meta Value: <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'metavalue' ) ); ?>" value="<?php echo esc_attr( $post_metavalue ); ?>" />
+			<?php esc_html_e( 'Meta value', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'metavalue' ) ); ?>" value="<?php echo esc_attr( $post_metavalue ); ?>" />
 			<br/>
-			Meta Compare
+			<?php esc_html_e( 'Meta compare', 'codevz' ); ?>
 			<select name="<?php echo esc_attr( $this->get_field_name( 'metacompare' ) ); ?>">
 	                <?php
 	                foreach( $metcompare as $mc ){
@@ -2972,9 +2989,9 @@ if ( ! class_exists( 'CodevzPostsList' ) ) {
 	            </select>
 			</p>
 			
-			<p>Read More title.  Leave blank to omit. <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'readmoretitle' ) ); ?>" value="<?php echo esc_attr($post_readmoretitle); ?>" /></p>
-			
-			<p>Read More link.  Leave blank to omit. Do not put home url (//example.com) if you want to use relative path.  If http(s) exists, static url you entered will be used. <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'readmorelink' ) ); ?>" value="<?php echo esc_attr($post_readmorelink); ?>" /></p>
+			<p><?php esc_html_e( 'Read more', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'readmoretitle' ) ); ?>" value="<?php echo esc_attr($post_readmoretitle); ?>" /></p>
+
+			<p><?php esc_html_e( 'Read more link', 'codevz' ); ?> <input class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'readmorelink' ) ); ?>" value="<?php echo esc_attr($post_readmorelink); ?>" /></p>
 			<?php
 		}
 	}

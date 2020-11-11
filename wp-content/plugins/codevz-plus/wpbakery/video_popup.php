@@ -413,7 +413,7 @@ class Codevz_WPBakery_video_popup {
 			$lightbox = 'cz_lightbox';
 			$atts['video'] = '';
 			$data_html = ' data-html="#' . $atts['id'] . '_mp4"';
-			$content_html = '<div style="display:none;" id="' . $atts['id'] . '_mp4"><video class="lg-video-object lg-html5" controls="" preload="none" autoplay="autoplay"><source src="' . esc_attr( $atts['mp4'] ) . '" type="video/mp4">Your browser does not support HTML5 video.</video></div>';
+			$content_html = '<div style="display:none;" id="' . $atts['id'] . '_mp4"><video class="lg-video-object lg-html5" controls="" preload="metadata"><source src="' . esc_attr( $atts['mp4'] ) . '" type="video/mp4">Your browser does not support HTML5 video.</video></div>';
 		} else if ( ! $atts['video'] ) {
 			$atts['video'] = 'https://www.youtube.com/watch?v=fY85ck-pI5c';
 		}

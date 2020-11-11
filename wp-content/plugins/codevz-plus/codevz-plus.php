@@ -4,7 +4,7 @@
  * Plugin Name: Codevz Plus
  * Plugin URI: https://xtratheme.com/
  * Description: StyleKit, custom post types, options and page builder elements.
- * Version: 3.9.10
+ * Version: 3.9.11
  * Author: XtraTheme
  * Author URI: https://xtratheme.com/
  * Text Domain: codevz
@@ -14,8 +14,8 @@
 class Codevz_Plus {
 
 	// Plugin version.
-	public static $ver = '3.9.10';
-	
+	public static $ver = '3.9.11';
+
 	// Server API address.
 	public static $api = 'https://xtratheme.com/api/';
 	
@@ -146,8 +146,7 @@ class Codevz_Plus {
 		add_action( 'admin_footer', [ $this, 'wp_color_palettes' ] );
 		add_action( 'customize_controls_print_footer_scripts', [ $this, 'wp_color_palettes' ] );
 
-		// Redirect maintenance pagefunction maintenance_mode() {
-		//add_action( 'get_header', [ $this, 'maintenance_mode' ] );
+		// Redirect maintenance page.
 		add_filter( 'template_redirect', [ $this, 'maintenance_mode' ] );
 
 		// Ajax search result
@@ -336,15 +335,14 @@ class Codevz_Plus {
 	}
 
 	/**
-	 * Disable autoptimize on frontend page builder.
+	 * Disable autoptimize on page builder.
+	 * 
 	 * @return boolean
 	 */
-	public static function vc_autoptimize() {
-		if ( self::$vc_editable ) {
-			return true;
-		} else {
-			return false;
-		}
+	public function vc_autoptimize() {
+
+		return isset( $_GET['vc_editable'] );
+
 	}
 
 	/**
@@ -491,15 +489,13 @@ class Codevz_Plus {
 				if ( $tabs ) {
 					$c[] = 'woo-product-tabs-' . $tabs;
 				}
-				
+
 				if ( in_array( 'lightbox', (array) self::option( 'woo_gallery_features' ) ) ) {
 					$c[] = 'woo-disable-lightbox';
 				}
 
-				//if ( self::option( 'woo_single_add_to_cart_ajax' ) ) {
-				//	$c[] = 'woo-single-ajax-add-to-cart';
-				//}
 			}
+
 		}
 
 		// RTL
@@ -588,8 +584,6 @@ class Codevz_Plus {
 	 * @return string
 	 */
 	public function wp_footer() {
-
-		do_action( 'codevz_hook_end_body' );
 
 		echo str_replace( '&', '&amp;', do_shortcode( self::option( 'foot_codes' ) ) );
 
@@ -710,17 +704,24 @@ class Codevz_Plus {
 	 */
 	public function init() {
 
-		// Menu navigation locations
-		register_nav_menus(array(
-			'primary' 	=> esc_html__( 'Primary', 'codevz' ), 
-			'one-page' 	=> esc_html__( 'One Page', 'codevz' ), 
-			'secondary' => esc_html__( 'Secondary', 'codevz' ), 
-			'footer'  	=> esc_html__( 'Footer', 'codevz' ),
-			'mobile'  	=> esc_html__( 'Mobile', 'codevz' ),
-			'custom-1' 	=> esc_html__( 'Custom 1', 'codevz' ), 
-			'custom-2' 	=> esc_html__( 'Custom 2', 'codevz' ), 
-			'custom-3' 	=> esc_html__( 'Custom 3', 'codevz' )
-		));
+		// Menu locations.
+		register_nav_menus(
+			[
+				'primary' 	=> esc_html__( 'Primary', 'codevz' ), 
+				'one-page' 	=> esc_html__( 'One Page', 'codevz' ), 
+				'secondary' => esc_html__( 'Secondary', 'codevz' ), 
+				'footer'  	=> esc_html__( 'Footer', 'codevz' ),
+				'mobile'  	=> esc_html__( 'Mobile', 'codevz' ),
+				'custom-1' 	=> esc_html__( 'Custom 1', 'codevz' ), 
+				'custom-2' 	=> esc_html__( 'Custom 2', 'codevz' ), 
+				'custom-3' 	=> esc_html__( 'Custom 3', 'codevz' ), 
+				'custom-4' 	=> esc_html__( 'Custom 4', 'codevz' ), 
+				'custom-5' 	=> esc_html__( 'Custom 5', 'codevz' ), 
+				'custom-6' 	=> esc_html__( 'Custom 6', 'codevz' ), 
+				'custom-7' 	=> esc_html__( 'Custom 7', 'codevz' ), 
+				'custom-8' 	=> esc_html__( 'Custom 8', 'codevz' )
+			]
+		);
 
 		// Register CPTs
 		self::post_types();
@@ -1997,17 +1998,28 @@ class Codevz_Plus {
 	 * 
 	 */
 	public static function link_attrs( $a = '' ) {
+
 		if ( $a ) {
+
 			$a = vc_build_link( $a );
-			$url = empty( $a['url'] ) ? '' : ' href="' . do_shortcode( $a['url'] ) . '"';
+
+			if ( empty( $a['url'] ) ) {
+				return '';
+			}
+
+			$url = ' href="' . do_shortcode( $a['url'] ) . '"';
 			$rel = empty( $a['rel'] ) ? '' : ' rel="nofollow"';
-			$title = empty( $a['title'] ) ? '' : ' title="' . esc_attr( $a['title'] ) . '"';
+			$title = empty( $a['title'] ) ? '' : ' title="' . do_shortcode( esc_attr( $a['title'] ) ) . '"';
 			$target = empty( $a['target'] ) ? '' : ' target="_blank"';
 
 			return $url . $rel . $title . $target;
+
 		} else {
+
 			return ' href="#"';
+
 		}
+
 	}
 
 	/**

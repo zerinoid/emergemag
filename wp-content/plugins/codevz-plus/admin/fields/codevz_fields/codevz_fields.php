@@ -125,7 +125,7 @@ if( ! class_exists( 'CSF_Field_codevz_box_shadow' ) ) {
       echo csf_add_field( array(
           'type'    => 'slider',
           'name'    => $this->element_name( '[x]' ),
-          'before'  => '<i>X</i>',
+          'before'  => '<i>' . esc_html__( 'X', 'codevz' ) . '</i>',
           'options' => $options,
           'dependency' => array( '_shadow_' . $this->field['id'], '!=', 'none' ),
       ), $this->value['x'], '', 'field/codevz_box_shadow' );
@@ -133,7 +133,7 @@ if( ! class_exists( 'CSF_Field_codevz_box_shadow' ) ) {
       echo csf_add_field( array(
           'type'    => 'slider',
           'name'    => $this->element_name( '[y]' ),
-          'before'  => '<i>Y</i>',
+          'before'  => '<i>' . esc_html__( 'Y', 'codevz' ) . '</i>',
           'options' => $options,
           'dependency' => array( '_shadow_' . $this->field['id'], '!=', 'none' ),
       ), $this->value['y'], '', 'field/codevz_box_shadow' );
@@ -141,7 +141,7 @@ if( ! class_exists( 'CSF_Field_codevz_box_shadow' ) ) {
       echo csf_add_field( array(
           'type'    => 'slider',
           'name'    => $this->element_name( '[blur]' ),
-          'before'  => '<i>Blur</i>',
+          'before'  => '<i>' . esc_html__( 'Blur', 'codevz' ) . '</i>',
           'options' => $options,
           'dependency' => array( '_shadow_' . $this->field['id'], '!=', 'none' ),
       ), $this->value['blur'], '', 'field/codevz_box_shadow' );
@@ -150,7 +150,7 @@ if( ! class_exists( 'CSF_Field_codevz_box_shadow' ) ) {
         echo csf_add_field( array(
             'type'    => 'slider',
             'name'    => $this->element_name( '[spread]' ),
-            'before'  => '<i>Spread</i>',
+            'before'  => '<i>' . esc_html__( 'Spread', 'codevz' ) . '</i>',
             'dependency' => array( '_shadow_' . $this->field['id'], '!=', 'none' ),
         ), ( isset( $this->value['spread'] ) ? $this->value['spread'] : '' ), '', 'field/codevz_box_shadow' );
       }
@@ -295,8 +295,8 @@ if( ! function_exists( 'csf_set_fonts' ) ) {
               <div class="csf-modal-close csf-font-close"></div>
             </div>
             <div class="csf-modal-header csf-text-center">
-              <input type="text" placeholder="<?php _e( 'Search', 'codevz' ); ?>" class="csf-font-search" />
-              <input type="text" placeholder="<?php _e( 'Preview', 'codevz' ); ?>" class="csf-font-placeholder">
+              <input type="text" placeholder="<?php esc_html__( 'Search', 'codevz' ); ?>" class="csf-font-search" />
+              <input type="text" placeholder="<?php esc_html__( 'Preview', 'codevz' ); ?>" class="csf-font-placeholder">
             </div>
             <div class="csf-modal-content"><div class="csf-font-loading"></div></div>
           </div>
@@ -361,7 +361,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Start
             echo '<div class="cz_sk_row cz_sk_content_row clr">';
-            echo '<h4>Content</h4>';
+            echo '<h4>' . esc_html__( 'Content', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'type'    => 'text',
               'id'      => 'live_id',
@@ -379,7 +379,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Indicator
             echo '<div class="cz_sk_row cz_sk_indicator_row clr">';
-            echo '<h4>Menu Indicator</h4>';
+            echo '<h4>' . esc_html__( 'Menu Indicator', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'      => '_class_indicator',
               'name'    => '_class_indicator',
@@ -390,7 +390,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Shape
             echo '<div class="cz_sk_row cz_sk_shape_row clr">';
-            echo '<h4>Shape</h4>';
+            echo '<h4>' . esc_html__( 'Shape', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'      => '_class_shape',
               'name'    => '_class_shape',
@@ -419,7 +419,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // FX Menu
             echo '<div class="cz_sk_row cz_sk_fx_row clr">';
-            echo '<h4>Menu FX</h4>';
+            echo '<h4>' . esc_html__( 'Menu FX', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'      => '_class_menu_fx',
               'name'    => '_class_menu_fx',
@@ -447,7 +447,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // FX SubMenu
             echo '<div class="cz_sk_row cz_sk_fx_row clr">';
-            echo '<h4>Dropdown FX</h4>';
+            echo '<h4>' . esc_html__( 'Dropdown FX', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'      => '_class_submenu_fx',
               'name'    => '_class_submenu_fx',
@@ -477,7 +477,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Typography
             echo '<div class="cz_sk_row cz_sk_typo_row clr">';
-            echo '<h4>Typography</h4>';
+            echo '<h4>' . esc_html__( 'Typography', 'codevz' ) . '</h4>';
 
             echo '<div class="col s6">' . csf_add_field( array(
               'id'      => 'font-size',
@@ -598,7 +598,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // SVG
             echo '<div class="cz_sk_row cz_sk_svg_row clr">';
-            echo '<h4>SVG Settings</h4>';
+            echo '<h4>' . esc_html__( 'SVG Settings', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'        => '_class_svg_type',
               'name'      => '_class_svg_type',
@@ -636,7 +636,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Background
             echo '<div class="cz_sk_row cz_sk_bg_row clr">';
-            echo '<h4>Background</h4><div class="col s12">' . csf_add_field( array(
+            echo '<h4>' . esc_html__( 'Background', 'codevz' ) . '</h4><div class="col s12">' . csf_add_field( array(
               'id'      => 'background',
               'name'    => 'background',
               'type'    => 'background',
@@ -645,7 +645,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Sizes
             echo '<div class="cz_sk_row cz_sk_size_row clr">';
-            echo '<h4>Sizes</h4>';
+            echo '<h4>' . esc_html__( 'Sizes', 'codevz' ) . '</h4>';
             echo '<div class="col s6">' . csf_add_field( array(
               'id'      => 'width',
               'name'    => 'width',
@@ -665,7 +665,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
             // Spaces
             echo '<div class="cz_sk_row cz_sk_spaces_row clr">';
             
-            echo '<h4>Spaces</h4>';
+            echo '<h4>' . esc_html__( 'Spaces', 'codevz' ) . '</h4>';
 
             echo '<div class="col s12">' . csf_add_field( array(
               'id'        => 'padding',
@@ -692,7 +692,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Border
             echo '<div class="cz_sk_row cz_sk_border_row clr">';
-            echo '<h4>Border</h4>';
+            echo '<h4>' . esc_html__( 'Border', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'        => 'border-style',
               'name'      => 'border-style',
@@ -748,7 +748,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Shadows
             echo '<div class="cz_sk_row cz_sk_shadow_row clr">';
-            echo '<h4>Shadows</h4>';
+            echo '<h4>' . esc_html__( 'Shadow', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'        => 'box-shadow',
               'name'      => 'box-shadow',
@@ -768,7 +768,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Advanced
             echo '<div class="cz_sk_row cz_sk_advance_row clr">';
-            echo '<h4>More Settings</h4>';
+            echo '<h4>' . esc_html__( 'More properties', 'codevz' ) . '</h4>';
 
             echo '<div class="col s6">' . csf_add_field( array(
               'id'      => 'display',
@@ -943,7 +943,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Custom
             echo '<div class="cz_sk_row cz_sk_custom clr" style="display: none !important">';
-            echo '<h4>Custom CSS</h4>';
+            echo '<h4>' . esc_html__( 'Custom CSS', 'codevz' ) . '</h4>';
             echo '<div class="col s12">' . csf_add_field( array(
               'id'      => 'custom',
               'name'    => 'custom',
@@ -960,7 +960,7 @@ if( ! function_exists( 'codevz_modal_style_kit' ) ) {
 
             // Custom RTL
             echo '<div class="cz_sk_row cz_custom_rtl clr">';
-            echo '<h4>RTL Mode</h4>';
+            echo '<h4>' . esc_html__( 'RTL mode', 'codevz' ) . '</h4>';
             echo '<div class="col s12"><a href="#" class="xtra-auto-rtl button-primary">Auto RTL</a>' . csf_add_field( array(
               'id'      => 'rtl',
               'name'    => 'rtl',

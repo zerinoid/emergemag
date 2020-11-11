@@ -64,6 +64,9 @@ class Xtra_Woocommerce {
 		// Add back to store button on WooCommerce cart page.
 		add_action( 'woocommerce_cart_actions', [ $this, 'continue_shopping' ] );
 
+		// Modify products query.
+		add_action( 'woocommerce_product_query', [ $this, 'products_query' ], 10, 2 );
+
 	}
 
 	public static function instance() {
@@ -118,7 +121,7 @@ class Xtra_Woocommerce {
 			        	</div>
 				        
 				        <div class="cz_cart_buttons clr">
-							<a href="<?php echo esc_url( get_permalink(get_option('woocommerce_cart_page_id')) ); ?>"><?php echo esc_html( do_shortcode( Codevz_Plus::option( 'woo_cart', 'Subtotal' ) ) ); ?> <span><?php echo wp_kses_post( $wc->cart->get_cart_total() ); ?></span></a>
+							<a href="<?php echo esc_url( get_permalink(get_option('woocommerce_cart_page_id')) ); ?>"><?php echo esc_html( do_shortcode( Codevz_Plus::option( 'woo_cart', 'Cart' ) ) ); ?> <span><?php echo wp_kses_post( $wc->cart->get_cart_total() ); ?></span></a>
 							<a href="<?php echo esc_url( get_permalink(get_option('woocommerce_checkout_page_id')) ); ?>"><?php echo esc_html( do_shortcode( Codevz_Plus::option( 'woo_checkout', 'Checkout' ) ) ); ?></a>
 				        </div>
 			        <?php } ?>
@@ -461,7 +464,19 @@ class Xtra_Woocommerce {
 	 * @return string
 	 */
 	public function continue_shopping() {
-		echo '<a class="button wc-backward" href="' . esc_url( wc_get_page_permalink( 'shop' ) ) . '">' . esc_html__( 'Continue shopping', 'codevz' ) . '</a>';
+		echo '<a class="button wc-backward" href="' . esc_url( wc_get_page_permalink( 'shop' ) ) . '">' . Codevz_Plus::option( 'woo_continue_shopping', esc_html__( 'Continue shopping', 'codevz' ) ) . '</a>';
+	}
+
+	/**
+	 * Modify products query.
+	 * 
+	 * @return object
+	 */
+	public function products_query( $query, $instance ) {
+
+		$query->set( 'order', Codevz_Plus::option( 'woo_order', 'ASC' ) );
+		$query->set( 'orderby', Codevz_Plus::option( 'woo_orderby', 'menu_order title' ) );
+
 	}
 
 }

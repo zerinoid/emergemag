@@ -3080,8 +3080,23 @@ li .comment-reply-title {
 .widget li {
     margin: 5px 0
 }
+
 .widget_nav_menu ul ul {
-	margin-top: 5px
+	display: none;
+	padding-top: 5px
+}
+.widget_nav_menu .menu-item-has-children {
+	position: relative
+}
+.widget_nav_menu .menu-item-has-children > a > i {
+	position: absolute;
+	cursor: pointer;
+	right: 10px;
+	top: 8px
+}
+.rtl .widget_nav_menu .menu-item-has-children > a > i {
+	right: auto;
+	left: 10px
 }
 
 .codevz-widget-about > .tal > * {
@@ -4064,10 +4079,13 @@ div.wpcf7 .ajax-loader.is-active {
 .rtl .wpcf7 input[type="email"] {
 	text-align: left
 }
-.rtl .wpcf7 input[type="email"]:-moz-placeholder {
+.rtl .wpcf7 input[type="email"]::placeholder {
 	text-align: right
 }
-.rtl .wpcf7 input[type="email"]:-ms-input-placeholder {
+.rtl .wpcf7 input[type="email"]::-moz-placeholder {
+	text-align: right
+}
+.rtl .wpcf7 input[type="email"]::-ms-input-placeholder {
 	text-align: right
 }
 .rtl .wpcf7 input[type="email"]::-webkit-input-placeholder {
@@ -4323,6 +4341,12 @@ p.tagcloud a:first-child,
 	padding: 0;
 	margin: 0;
 	list-style: none
+}
+.codevz-widget-custom-nav-menu ul ul {
+	margin: 0 0 0 10px
+}
+.rtl .codevz-widget-custom-nav-menu ul ul {
+	margin: 0 10px 0 0
 }
 .codevz-widget-custom-menu-horizontal li {
 	display: inline-block

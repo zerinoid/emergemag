@@ -19,7 +19,7 @@ var Codevz = (function($) {
 				i.apply( e.data( 'codevz', n ), [ a ] );
 			}
 		});
-		
+
 	}
 
 	return {
@@ -123,6 +123,26 @@ var Codevz = (function($) {
 					body.removeClass( "xtra-printing" );
 					print.empty();
 				}, 1000 );
+			});
+
+			// Widget nav menu dropdown.
+			$( '.widget_nav_menu .menu-item-has-children > a' ).each( function() {
+
+				var en = $( this );
+
+				if ( ! en.find( '.fa-pulse' ).length ) {
+					en.append( '<i class="fa fa-angle-down"></i>' );
+				}
+
+			});
+
+			// Widget nav menu dropdown arrow.
+			body.on( 'click', '.widget_nav_menu .menu-item-has-children > a > i', function( e ) {
+
+				$( this ).toggleClass( 'fa-angle-down fa-angle-up' ).closest( 'li' ).find( '> ul' ).slideToggle();
+
+				e.preventDefault();
+
 			});
 
 			// Dropdown menu off screen.
@@ -280,12 +300,16 @@ var Codevz = (function($) {
 						});
 
 						if ( dis.hasClass('sub-menu') ) {
-							var ul_offset = 100;
 
 							// Check if mega menu is fullwide
 							if ( dis.parent().hasClass( 'cz_megamenu_width_fullwide' ) ) {
-								dis.css( 'cssText', 'width: ' + wind.width() + 'px !important' );
-								ul_offset = 0;
+
+								var megamenu_row = body,
+									megamenu_row_offset = megamenu_row.offset().left,
+									megamenu_row_width = megamenu_row.width();
+
+								dis.attr( 'style', dis.attr( 'style' ) + 'width: ' + wind.width() + 'px;left:' + ( megamenu_row_offset - dis.parent().offset().left ) + 'px;margin-right:0;margin-left:0;' );
+							
 							}
 
 							// Sub-menu styling
@@ -302,10 +326,10 @@ var Codevz = (function($) {
 
 							// Megamenu full row
 							if ( dis.parent().hasClass( 'cz_megamenu_width_full_row' ) ) {
-								var megamenu_row = $( '.row' ),
-									megamenu_row_offset = megamenu_row.offset().left;
 
-								var megamenu_row_width = megamenu_row.width();
+								var megamenu_row = $( '.row' ),
+									megamenu_row_offset = megamenu_row.offset().left,
+									megamenu_row_width = megamenu_row.width();
 
 								if ( dis.closest( '.cz-extra-menus' ).length ) {
 
@@ -314,7 +338,7 @@ var Codevz = (function($) {
 								}
 
 								dis.attr( 'style', dis.attr( 'style' ) + 'width: ' + megamenu_row_width + 'px;left:' + ( megamenu_row_offset - dis.parent().offset().left ) + 'px;' );
-								ul_offset = 0;
+
 							}
 
 						}

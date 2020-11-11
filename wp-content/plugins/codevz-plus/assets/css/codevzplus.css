@@ -1922,10 +1922,10 @@ i.cz_quote_shape {
 	z-index: 1
 }
 .odd_even .slick-slide:nth-child(odd) {
-	margin-top: 30px
+	margin-top: 30px !important
 }
 .even_odd .slick-slide:nth-child(even) {
-	margin-top: 30px
+	margin-top: 30px !important
 }
 
 /* Arrows */
@@ -3110,6 +3110,7 @@ header .cz_ticker {
 .cz_social_colored .cz-013-whatsapp-logo i, .cz_social_colored_hover .cz-013-whatsapp-logo:hover i {color: #25D366 !important}
 .cz_social_colored .cz-behance i, .cz_social_colored_hover .cz-behance:hover i {color: #131418 !important}
 .cz_social_colored .cz-telegram i, .cz_social_colored_hover .cz-telegram:hover i,
+.cz_social_colored .cz-telegram-plane i, .cz_social_colored_hover .cz-telegram-plane:hover i,
 .cz_social_colored .cz-paper-plane i, .cz_social_colored_hover .cz-paper-plane:hover i,
 .cz_social_colored .cz-paper-plane-o i, .cz_social_colored_hover .cz-paper-plane-o:hover i {color: #0088cc !important}
 .cz_social_colored .cz-aparat i, .cz_social_colored_hover .cz-aparat:hover i {color: #ed0b58 !important}
@@ -3146,6 +3147,7 @@ header .cz_ticker {
 .cz_social_colored_bg .cz-013-whatsapp-logo, .cz_social_colored_bg_hover .cz-013-whatsapp-logo:hover {background-color: #25D366 !important}
 .cz_social_colored_bg .cz-behance, .cz_social_colored_bg_hover .cz-behance:hover {background-color: #131418 !important}
 .cz_social_colored_bg .cz-telegram, .cz_social_colored_bg_hover .cz-telegram:hover,
+.cz_social_colored_bg .cz-telegram-plane, .cz_social_colored_bg_hover .cz-telegram-plane:hover,
 .cz_social_colored_bg .cz-paper-plane, .cz_social_colored_bg_hover .cz-paper-plane:hover,
 .cz_social_colored_bg .cz-paper-plane-o, .cz_social_colored_bg_hover .cz-paper-plane-o:hover {background-color: #0088cc !important}
 .cz_social_colored_bg .cz-aparat, .cz_social_colored_bg_hover .cz-aparat:hover {background-color: #ed0b58 !important}

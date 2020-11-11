@@ -10,18 +10,27 @@
 class Codevz_Options {
 
 	private static $instance = null;
-	private static $sk_advanced;
+	private static $sk_advanced, $trasnlation;
 
 	public function __construct() {
 
 		self::$sk_advanced = '<div class="cz_advanced_tab"><span class="cz_s cz_active">' . esc_html__( 'Simple', 'codevz' ) . '</span><span class="cz_a">' . esc_html__( 'Advanced', 'codevz' ) . '</span></div>';
+
+		// Translate positions.
+		self::$trasnlation = [
+			'left' 		=> esc_html__( 'Left', 'codevz' ),
+			'center' 	=> esc_html__( 'Center', 'codevz' ),
+			'right' 	=> esc_html__( 'Right', 'codevz' ),
+			'top' 		=> esc_html__( 'Top', 'codevz' ),
+			'middle' 	=> esc_html__( 'Middle', 'codevz' ),
+			'bottom' 	=> esc_html__( 'Bottom', 'codevz' ),
+		];
 
 		// Options & Metabox
 		add_action( 'init', [ $this, 'init' ], 999 );
 
 		// Save customize settings
 		add_action( 'customize_save_after', [ $this, 'customize_save_after' ], 10, 2 );
-		//add_action( 'updated_option', [ $this, 'classic_options' ], 10, 2 );
 
 		// Enqueue inline styles
 		if ( ! isset( $_POST['vc_inline'] ) ) {
@@ -36,7 +45,7 @@ class Codevz_Options {
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
-		
+
 		return self::$instance;
 	}
 
@@ -46,27 +55,10 @@ class Codevz_Options {
 	public function init() {
 
 		if ( class_exists( 'CSF' ) ) {
-			CSF_Customize::instance( self::options(), 'codevz_theme_options' );
-			CSF_Metabox::instance( self::metabox() );
 
-			/*
-			$settings = [
-				'option_name'      => 'codevz_theme_options',
-				'framework_title'  => 'Classic Theme Options',
-				'menu_title'       => 'Classic Theme Options',
-				'menu_type'        => 'submenu',
-				'menu_parent' 	   => 'codevz-dashboard',
-				'menu_slug'        => 'codevz-theme-options',
-				'show_search'      => false,
-				'show_reset'       => false,
-				'show_footer'      => true,
-				'show_all_options' => false,
-				'ajax_save'        => true,
-				'sticky_header'    => true,
-				'save_defaults'    => true,
-			];
-			CSF_Options::instance( $settings, self::options() );
-			*/
+			CSF_Customize::instance( self::options(), 'codevz_theme_options' );
+
+			CSF_Metabox::instance( self::metabox() );
 
 			// Taxonomy Meta
 			$tax_meta = [];
@@ -210,7 +202,7 @@ class Codevz_Options {
 	 */
 	public static function css_out( $is_customize_preview = 0, $single_page = 0, $post_id = '' ) {
 		$out = $dynamic = $dynamic_tablet = $dynamic_mobile = '';
-		$fonts = array();
+		$fonts = [];
 
 		// Options
 		$opt = $single_page ? (array) $single_page : (array) get_option( 'codevz_theme_options' );
@@ -489,17 +481,6 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 			$all = json_encode( Codevz_Plus::option() );
 			$all = str_replace( array( $o, $old_rgb, $old_rgb_s ), array( $n, $new_rgb, $new_rgb_s ), $all );
 			update_option( 'codevz_theme_options', json_decode( $all, true ) );
-		}
-	}
-
-	/**
-	 *  Action after theme options saved
-	 */
-	public function classic_options( $id, $old ) {
-		if ( isset( $_REQUEST['codevz_theme_options'] ) ) {
-			remove_action( 'updated_option', [ $this, 'classic_options' ], 10, 2 );
-			self::customize_save_after( 0, $old );
-			add_action( 'updated_option', [ $this, 'classic_options' ], 10, 2 );
 		}
 	}
 
@@ -5092,6 +5073,30 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 									'options'		=> array( 'unit' => '', 'step' => 1, 'min' => -1, 'max' => 100 ),
 								),
 								array(
+									'id' 			=> 'woo_order',
+									'type' 			=> 'select',
+									'title' 		=> esc_html__( 'Products order', 'codevz' ),
+									'options' 		=> [
+										'' 				=> esc_html__( '-- DEFAULT --', 'codevz' ),
+										'ASC' 			=> esc_html__( 'ASC', 'codevz' ),
+										'DESC' 			=> esc_html__( 'DESC', 'codevz' ),
+									]
+								),
+								array(
+									'id' 			=> 'woo_orderby',
+									'type' 			=> 'select',
+									'title' 		=> esc_html__( 'Products orderby', 'codevz' ),
+									'options' 		=> [
+										'' 				=> esc_html__( '-- DEFAULT --', 'codevz' ),
+										'date' 			=> esc_html__( 'Date', 'codevz' ),
+										'ID' 			=> esc_html__( 'ID', 'codevz' ),
+										'title' 		=> esc_html__( 'Title', 'codevz' ),
+										'rand' 			=> esc_html__( 'Random', 'codevz' ),
+										'menu_order' 	=> esc_html__( 'Menu order', 'codevz' ),
+										'comment_count' => esc_html__( 'Reviews count', 'codevz' ),
+									]
+								),
+								array(
 									'id' 			=> 'woo_hover_effect',
 									'type' 			=> 'select',
 									'title' 		=> esc_html__( 'Image Hover Effect', 'codevz' ),
@@ -5130,14 +5135,21 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 									'id'    		=> 'woo_cart',
 									'type'  		=> 'text',
 									'title' 		=> esc_html__( 'Cart translation', 'codevz' ),
-									'default' 		=> 'Cart',
+									'default' 		=> esc_html__( 'Cart', 'codevz' ),
 									'setting_args' 	=> [ 'transport' => 'postMessage' ],
 								),
 								array(
 									'id'    		=> 'woo_checkout',
 									'type'  		=> 'text',
 									'title' 		=> esc_html__( 'Cart checkout translation', 'codevz' ),
-									'default' 		=> 'Checkout',
+									'default' 		=> esc_html__( 'Checkout', 'codevz' ),
+									'setting_args' 	=> [ 'transport' => 'postMessage' ],
+								),
+								array(
+									'id'    		=> 'woo_continue_shopping',
+									'type'  		=> 'text',
+									'title' 		=> esc_html__( 'Continue shopping', 'codevz' ),
+									'default' 		=> esc_html__( 'Continue shopping', 'codevz' ),
 									'setting_args' 	=> [ 'transport' => 'postMessage' ],
 								),
 								array(
@@ -5564,11 +5576,6 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 								],
 								'default' 		=> '3'
 							),
-							//array(
-							//	'id'    		=> 'woo_single_add_to_cart_ajax',
-							//	'type'  		=> 'switcher',
-							//	'title' 		=> esc_html__( 'Ajax add to cart', 'codevz' )
-							//),
 							array(
 								'id' 	=> 'woo_gallery_features',
 								'type' 	=> 'checkbox',
@@ -6119,29 +6126,44 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 	 * @return string
 	 *
 	 */
-	public static function get_selector( $i = '', $s = array() ) {
+	public static function get_selector( $i = '', $s = [] ) {
 
-		// Generate ID's for live customizer JS
-		foreach( self::options() as $option ) {
-			if ( ! empty( $option['sections'] ) ) {
-				foreach ( $option['sections'] as $section ) {
-					if ( ! empty( $section['fields'] ) ) {
-						foreach( $section['fields'] as $field ) {
+		// Current file size.
+		$filesize = filesize( __FILE__ );
+
+		// selectors array.
+		$s = get_option( 'xtra_cache_selectors' );
+
+		// Cache selectors array as a option.
+		if ( $filesize != get_option( 'xtra_size_selectors' ) || ! $s ) {
+
+			// Generate ID's for live customizer JS
+			foreach( self::options() as $option ) {
+				if ( ! empty( $option['sections'] ) ) {
+					foreach ( $option['sections'] as $section ) {
+						if ( ! empty( $section['fields'] ) ) {
+							foreach( $section['fields'] as $field ) {
+								if ( ! empty( $field['id'] ) && ! empty( $field['selector'] ) ) {
+									$s[ $field['id'] ] = $field['selector'];
+								}
+							}
+						}
+					}
+				} else {
+					if ( ! empty( $option['fields'] ) ) {
+						foreach( $option['fields'] as $field ) {
 							if ( ! empty( $field['id'] ) && ! empty( $field['selector'] ) ) {
-								$s[ $field['id'] ] = $field['selector'];
+								$s[ $field['id'] ] =  $field['selector'];
 							}
 						}
 					}
 				}
-			} else {
-				if ( ! empty( $option['fields'] ) ) {
-					foreach( $option['fields'] as $field ) {
-						if ( ! empty( $field['id'] ) && ! empty( $field['selector'] ) ) {
-							$s[ $field['id'] ] =  $field['selector'];
-						}
-					}
-				}
 			}
+
+			update_option( 'xtra_cache_selectors', $s );
+
+			update_option( 'xtra_size_selectors', $filesize );
+
 		}
 
 		return ( $i === 'all' ) ? $s : ( isset( $s[ $i ] ) ? $s[ $i ] : '' );
@@ -6186,8 +6208,8 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 			'id'              => $id,
 			'type'            => 'group',
 			'title'           => $title,
-			'button_title'    => esc_html__( 'Add', 'codevz' ) . ' ' . ucwords( $pos ),
-			'accordion_title' => esc_html__( 'Add', 'codevz' ) . ' ' . ucwords( $pos ),
+			'button_title'    => esc_html__( 'Add', 'codevz' ) . ' ' . ucwords( self::$trasnlation[ $pos ] ),
+			'accordion_title' => esc_html__( 'Add', 'codevz' ) . ' ' . ucwords( self::$trasnlation[ $pos ] ),
 			'dependency'	  => $dependency,
 			'setting_args' 	  => [ 'transport' => 'postMessage' ],
 			'fields'          => array(
@@ -6295,7 +6317,10 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 						'custom-2' 	=> esc_html__( 'Custom 2', 'codevz' ), 
 						'custom-3' 	=> esc_html__( 'Custom 3', 'codevz' ),
 						'custom-4' 	=> esc_html__( 'Custom 4', 'codevz' ),
-						'custom-5' 	=> esc_html__( 'Custom 5', 'codevz' )
+						'custom-5' 	=> esc_html__( 'Custom 5', 'codevz' ),
+						'custom-6' 	=> esc_html__( 'Custom 6', 'codevz' ),
+						'custom-7' 	=> esc_html__( 'Custom 7', 'codevz' ),
+						'custom-8' 	=> esc_html__( 'Custom 8', 'codevz' )
 					),
 					'dependency' => array( 'element', '==', 'menu' ),
 				),
@@ -7048,8 +7073,8 @@ input:focus,textarea:focus,select:focus {border-color: ' . $site_color . ' !impo
 			$out[] = array(
 				'id' 			=> '_css_' . $id . '_' . $pos,
 				'type' 			=> 'cz_sk',
-				'title' 		=> ucfirst( $pos ),
-				'button' 		=> ucfirst( $pos ),
+				'title' 		=> ucfirst( self::$trasnlation[ $pos ] ),
+				'button' 		=> ucfirst( self::$trasnlation[ $pos ] ),
 				'setting_args' 	=> [ 'transport' => 'postMessage' ],
 				'settings' 		=> array( 'background', '_class_shape', 'padding', 'border' ),
 				'selector' 		=> $elm . ' .elms_' . $pos,

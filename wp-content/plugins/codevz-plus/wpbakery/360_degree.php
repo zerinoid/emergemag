@@ -10,8 +10,9 @@
 class Codevz_WPBakery_360_degree {
 
 	public function __construct( $name ) {
+
 		$this->name = $name;
-		
+
 	}
 
 	/**

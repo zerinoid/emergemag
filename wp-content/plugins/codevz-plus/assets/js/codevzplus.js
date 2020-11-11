@@ -296,32 +296,12 @@ var Codevz_Plus = (function($) {
 					selector: lightbox_selector
 				});
 
-				/*body.on( 'click', 'a[href*="youtube.com/watch?"],a[href*="youtu.be/watch?"]', function() {
-					$lg.trigger( 'onBeforeOpen.lg', $( this ).attr( 'href' ) );
-				});
-
+				// Load video.
 				$lg.on( 'onBeforeOpen.lg', function( event, href ) {
 
-					if ( href ) {
+					$( '.lg-video-object' ).attr( 'preload', 'metadata' );
 
-						var $embedVideo = $( '.lg-outer .lg-inner .lg-video-object' ),
-							url = $embedVideo.attr( 'src' ),
-							pieces = href.split( '?' ),
-							pieces = pieces[1].split( '&' );
-
-						$.each( pieces, function( key, value ) {
-
-							if ( value.indexOf( 'v=' ) < 0 ) {
-								url += '&' + value;
-							}
-
-						});
-
-						$embedVideo.attr( 'src', url );
-
-					}
-
-				});*/
+				});
 
 			}
 			
@@ -1608,6 +1588,29 @@ var Codevz_Plus = (function($) {
 		},
 
 		/*
+		*   Convert persian/arabic numbers to english.
+		*/
+		convertNumbers: function( number, toPersian ) {
+
+			var persian = [ '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' ];
+
+			number = number.toLocaleString();
+
+			if ( toPersian ) {
+
+				return number.replace( /[0-9]/g, function( i ) {
+					return persian[ +i ]
+				});
+
+			}
+
+			return number.replace( /[۰-۹]/g, function ( i ) {
+				return persian.indexOf( i );
+			});
+
+		},
+
+		/*
 		*   Counter
 		*/
 		counter: function() {
@@ -1617,14 +1620,16 @@ var Codevz_Plus = (function($) {
 				var dis = $( this ), 
 					del = wind.width() <= 480 ? 0 : parseInt( dis.data( 'delay' ) ) || 0, 
 					eln = $( '.cz_counter_num', dis ),
-					num = eln.text(),
+					org = eln.text(),
+					per = Math.ceil( org ).toLocaleString() == 'NaN' ? true : false,
+					num = parseInt( Codevz_Plus.convertNumbers( org ) ),
 					dur = parseInt( dis.data( 'duration' ) ),
 					com = !dis.data( 'disable-comma' ),
 					tls = com ? Math.ceil( num ).toLocaleString() : Math.ceil( num );
 
 				// If duration is 0
 				if ( dur == 0 || wind.width() <= 768 ) {
-					eln.html( tls );
+					eln.html( per ? Codevz_Plus.convertNumbers( tls, true ) : tls );
 					return;
 				}
 
@@ -1636,22 +1641,27 @@ var Codevz_Plus = (function($) {
 						return;
 					}
 				}
-				eln.html('0');
+				eln.html( per ? Codevz_Plus.convertNumbers( '0', true ) : '0' );
 
 				// On page scrolling
 				wind.on( 'scroll.cz_counter', function() {
 					if ( Codevz_Plus.inview( dis ) && ! dis.hasClass( 'done' ) ) {
-						dis.addClass( 'done' ).delay( del ).prop( 'Counter', 0 ).animate({ Counter: parseInt( num ) }, {
-							duration: dur,
-							easing: 'swing',
-							step: function () {
-								num = com ? Math.ceil( this.Counter ).toLocaleString() : Math.ceil( this.Counter );
-								eln.text( num );
+						dis.addClass( 'done' ).delay( del ).prop( 'Counter', 0 ).animate(
+							{
+								Counter: num
 							},
-							complete: function() {
-								eln.text( tls );
+							{
+								duration: dur,
+								easing: 'swing',
+								step: function () {
+									num = com ? Math.ceil( this.Counter ).toLocaleString() : Math.ceil( this.Counter );
+									eln.text( per ? Codevz_Plus.convertNumbers( num, true ) : num );
+								},
+								complete: function() {
+									eln.text( per ? Codevz_Plus.convertNumbers( tls, true ) : tls );
+								}
 							}
-						});
+						);
 					}
 
 					if ( ! $( '.cz_counter:not(.done)' ).length ) {

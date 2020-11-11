@@ -35,9 +35,9 @@ if( ! class_exists( 'CSF_Field_group' ) ) {
       echo '<div class="csf-cloneable-item csf-cloneable-hidden csf-no-script">';
 
       echo '<div class="csf-cloneable-helper">';
-      echo '<i class="csf-cloneable-pending fa fa-circle" title="Pending"></i>';
-      echo '<i class="csf-cloneable-clone fa fa-clone" title="Clone"></i>';
-      echo '<i class="csf-cloneable-remove fa fa-times" title="Remove"></i>';
+      echo '<i class="csf-cloneable-pending fa fa-circle" title="' . esc_html__( 'Pending', 'codevz' ) . '"></i>';
+      echo '<i class="csf-cloneable-clone fa fa-clone" title="' . esc_html__( 'Clone', 'codevz' ) . '"></i>';
+      echo '<i class="csf-cloneable-remove fa fa-times" title="' . esc_html__( 'Remove', 'codevz' ) . '"></i>';
       echo '</div>';
 
         echo '<h4 class="csf-cloneable-title"><span class="csf-cloneable-text">'. $acc_title .'</span></h4>';
@@ -84,9 +84,9 @@ if( ! class_exists( 'CSF_Field_group' ) ) {
             echo '<div class="csf-cloneable-item">';
 
             echo '<div class="csf-cloneable-helper">';
-            echo '<i class="csf-cloneable-pending fa fa-circle" title="Pending"></i>';
-            echo '<i class="csf-cloneable-clone fa fa-clone" title="Clone"></i>';
-            echo '<i class="csf-cloneable-remove fa fa-times" title="Remove"></i>';
+            echo '<i class="csf-cloneable-pending fa fa-circle" title="' . esc_html__( 'Pending', 'codevz' ) . '"></i>';
+            echo '<i class="csf-cloneable-clone fa fa-clone" title="' . esc_html__( 'Clone', 'codevz' ) . '"></i>';
+            echo '<i class="csf-cloneable-remove fa fa-times" title="' . esc_html__( 'Remove', 'codevz' ) . '"></i>';
             echo '</div>';
 
             $acc_title = ucwords( $title );

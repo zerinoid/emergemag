@@ -86,6 +86,7 @@ class Codevz_Demo_Importer {
 	public static function importer_modal_content() {
 
 		$demos = [
+			'photographer' 		=> '',
 			'elderly-care' 		=> '',
 			'investment' 		=> '',
 			'dance' 			=> '',

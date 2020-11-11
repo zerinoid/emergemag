@@ -227,6 +227,14 @@ class Codevz_WPBakery_particles {
 	jQuery(document).ready(function() {
 		setTimeout(function() {
 			if ( typeof particlesJS != "undefined" ) {
+
+				if (window["pJSDom"] instanceof Array && window["pJSDom"].length > 0) {
+					for (let i = 0; i < window["pJSDom"].length; i++) {
+						window["pJSDom"][i].pJS.fn.vendors.destroypJS();
+					}
+					window["pJSDom"] = [];
+				}
+
 				particlesJS("' . $atts['id'] . '", {
 				  "particles": {
 				    "number": {

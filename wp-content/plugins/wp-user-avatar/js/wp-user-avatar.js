@@ -99,6 +99,7 @@ jQuery(function($) {
     $('#your-profile').attr('enctype', 'multipart/form-data');
     var a = $('#wp-user-avatar-existing').val();
     var b = $('#wpua-preview-existing').find('img').attr('src');
+    $('#wpua-undo-button-existing').hide();
     $('body').on('click', '#wpua-remove-existing', function(e) {
         e.preventDefault();
         $('#wpua-original-existing').remove();

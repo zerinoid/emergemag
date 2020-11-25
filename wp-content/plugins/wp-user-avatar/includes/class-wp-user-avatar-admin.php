@@ -321,7 +321,7 @@ class WP_User_Avatar_Admin {
    * @return array
    */
   public function wpua_add_column($columns) {
-    return $columns + array('wp-user-avatar' => __('Avatar','wp-user-avatar'));
+    return $columns + array('wp-user-avatar' => __('Profile Picture','wp-user-avatar'));
   }
 
   /**
@@ -375,7 +375,7 @@ class WP_User_Avatar_Admin {
     global $post, $wpua_avatar_default;
     $is_wpua = get_post_custom_values('_wp_attachment_wp_user_avatar', $post->ID);
     if(!empty($is_wpua)) {
-      $states[] = __('Avatar','wp-user-avatar');
+      $states[] = __('Profile Picture','wp-user-avatar');
     }
     if(!empty($wpua_avatar_default) && ($wpua_avatar_default == $post->ID)) {
       $states[] = __('Default Avatar','wp-user-avatar');

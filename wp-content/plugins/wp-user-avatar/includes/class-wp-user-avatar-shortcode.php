@@ -199,7 +199,7 @@ class WP_User_Avatar_Shortcode {
         $get_user = empty($get_user) ? get_user_by('slug', $user) : $get_user;
         $get_user = empty($get_user) ? get_user_by('email', $user) : $get_user;
         // Check if current user can edit this user
-        $valid_user = current_user_can('edit_user', $get_user) ? $get_user : null;
+        $valid_user = current_user_can('edit_user', $get_user->ID) ? $get_user : null;
       }
       // Show form only for valid user
       if($valid_user) {

@@ -15,7 +15,9 @@ final class Cache_Enabler_Engine {
      * start engine
      *
      * @since   1.5.2
-     * @change  1.5.2
+     * @change  1.6.0
+     *
+     * @return  boolean  true if engine started, false otherwise
      */
 
     public static function start() {
@@ -23,6 +25,8 @@ final class Cache_Enabler_Engine {
         if ( self::should_start() ) {
             new self();
         }
+
+        return self::$started;
     }
 
     /**
@@ -53,15 +57,15 @@ final class Cache_Enabler_Engine {
      * constructor
      *
      * @since   1.5.0
-     * @change  1.5.2
+     * @change  1.6.0
      */
 
     public function __construct() {
 
-        // get settings from disk if cache exists
-        if ( Cache_Enabler_Disk::cache_exists() ) {
+        // get settings from disk if directory index file
+        if ( self::is_index() ) {
             self::$settings = Cache_Enabler_Disk::get_settings();
-        // get settings from database otherwise
+        // get settings from database in late engine start otherwise
         } elseif ( class_exists( 'Cache_Enabler' ) ) {
             self::$settings = Cache_Enabler::get_settings();
             // set deprecated settings
@@ -92,7 +96,7 @@ final class Cache_Enabler_Engine {
             return false;
         }
 
-        // check if Ajax request in early start
+        // check if Ajax request in early engine start
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX && ! class_exists( 'Cache_Enabler' ) ) {
             return false;
         }
@@ -122,36 +126,15 @@ final class Cache_Enabler_Engine {
 
 
     /**
-     * check if output buffering should start
-     *
-     * @since   1.5.0
-     * @change  1.5.0
-     *
-     * @return  boolean  true if output buffering should start, false otherwise
-     */
-
-    public static function should_buffer() {
-
-        if ( self::$started && self::is_index() ) {
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
      * start output buffering
      *
      * @since   1.5.0
-     * @change  1.5.0
+     * @change  1.6.0
      */
 
     public static function start_buffering() {
 
-        if ( self::should_buffer() ) {
-            ob_start( 'self::end_buffering' );
-        }
+        ob_start( 'self::end_buffering' );
     }
 
 
@@ -159,13 +142,11 @@ final class Cache_Enabler_Engine {
      * end output buffering and cache page if applicable
      *
      * @since   1.0.0
-     * @change  1.5.0
+     * @change  1.6.0
      *
      * @param   string   $page_contents  content of a page from the output buffer
      * @param   integer  $phase          bitmask of PHP_OUTPUT_HANDLER_* constants
      * @return  string   $page_contents  content of a page from the output buffer
-     *
-     * @hook    string   cache_enabler_before_store
      */
 
     private static function end_buffering( $page_contents, $phase ) {
@@ -175,7 +156,9 @@ final class Cache_Enabler_Engine {
                 return $page_contents;
             }
 
-            $page_contents = apply_filters( 'cache_enabler_before_store', $page_contents );
+            $page_contents = apply_filters( 'cache_enabler_page_contents_before_store', $page_contents );
+
+            $page_contents = apply_filters_deprecated( 'cache_enabler_before_store', array( $page_contents ), '1.6.0', 'cache_enabler_page_contents_before_store' );
 
             Cache_Enabler_Disk::cache_page( $page_contents );
 
@@ -185,12 +168,12 @@ final class Cache_Enabler_Engine {
 
 
     /**
-     * check if installation directory index
+     * check if directory index file
      *
      * @since   1.0.0
      * @change  1.5.0
      *
-     * @return  boolean  true if installation directory index, false otherwise
+     * @return  boolean  true if directory index file, false otherwise
      */
 
     private static function is_index() {
@@ -325,6 +308,25 @@ final class Cache_Enabler_Engine {
 
 
     /**
+     * check if search page
+     *
+     * @since   1.6.0
+     * @change  1.6.0
+     *
+     * @return  boolean  true if search page, false otherwise
+     */
+
+    private static function is_search() {
+
+        if ( apply_filters( 'cache_enabler_exclude_search', is_search() ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
      * check if mobile template
      *
      * @since   1.0.0
@@ -343,17 +345,20 @@ final class Cache_Enabler_Engine {
      * check if cache should be bypassed
      *
      * @since   1.0.0
-     * @change  1.5.2
+     * @change  1.6.0
      *
      * @return  boolean  true if cache should be bypassed, false otherwise
-     *
-     * @hook    boolean  bypass_cache
      */
 
     private static function bypass_cache() {
 
         // bypass cache hook
-        if ( apply_filters( 'bypass_cache', false ) ) {
+        if ( apply_filters( 'cache_enabler_bypass_cache', false ) ) {
+            return true;
+        }
+
+        // deprecated bypass cache hook
+        if ( apply_filters_deprecated( 'bypass_cache', array( false ), '1.6.0', 'cache_enabler_bypass_cache' ) ) {
             return true;
         }
 
@@ -364,11 +369,6 @@ final class Cache_Enabler_Engine {
 
         // check HTTP status code
         if ( http_response_code() !== 200 ) {
-            return true;
-        }
-
-        // check WP_CACHE constant
-        if ( defined( 'WP_CACHE' ) && ! WP_CACHE ) {
             return true;
         }
 
@@ -384,7 +384,7 @@ final class Cache_Enabler_Engine {
 
         // check conditional tags when output buffering has ended
         if ( class_exists( 'WP' ) ) {
-            if ( is_admin() || is_search() || is_feed() || is_trackback() || is_robots() || is_preview() || post_password_required() || self::is_mobile() ) {
+            if ( is_admin() || self::is_search() || is_feed() || is_trackback() || is_robots() || is_preview() || post_password_required() || self::is_mobile() ) {
                 return true;
             }
         }
@@ -397,16 +397,18 @@ final class Cache_Enabler_Engine {
      * deliver cache
      *
      * @since   1.5.0
-     * @change  1.5.5
+     * @change  1.6.0
+     *
+     * @return  boolean  false if cached page was not delivered
      */
 
     public static function deliver_cache() {
 
-        if ( ! self::$started || Cache_Enabler_Disk::cache_expired() || self::bypass_cache() ) {
-            return;
+        if ( Cache_Enabler_Disk::cache_exists() && ! Cache_Enabler_Disk::cache_expired() && ! self::bypass_cache()  ) {
+            readfile( Cache_Enabler_Disk::get_cache() );
+            exit;
         }
 
-        readfile( Cache_Enabler_Disk::get_cache() );
-        exit;
+        return false;
     }
 }

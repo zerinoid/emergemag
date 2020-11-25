@@ -4,7 +4,7 @@ Contributors: properfraction, collizo4sky
 Tags: user profile, avatar, gravatar, author image, author photo, author avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo, widget
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 2.2.7
+Stable tag: 2.2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -369,6 +369,13 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 2.2.8 =
+* Fixed: Notice: Object of class WP_User could not be converted.
+* Replace core Profile Picture in profile edit screen with WP User Avatar.
+* Replace 'Avatar' as a label with 'Profile Picture'.
+* Removed dashboard access restriction feature.
+* Fixed contextual button display showing undo button on page load.
 
 = 2.2.7 =
 * Removed target blank from dismiss url of admin notice

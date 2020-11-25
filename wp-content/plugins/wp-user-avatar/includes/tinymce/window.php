@@ -120,7 +120,7 @@ if(!defined('ABSPATH')) {
 <body id="link" class="wp-core-ui" onload="document.body.style.display='';" style="display:none;">
   <div id="wpua-tabs">
     <ul>
-      <li><a href="#wpua"><?php _e('Avatar','wp-user-avatar'); ?></a></li>
+      <li><a href="#wpua"><?php _e('Profile Picture','wp-user-avatar'); ?></a></li>
       <li><a href="#wpua-upload"><?php _e('Upload','wp-user-avatar'); ?></a></li>
     </ul>
     <form name="wpUserAvatar" action="#">

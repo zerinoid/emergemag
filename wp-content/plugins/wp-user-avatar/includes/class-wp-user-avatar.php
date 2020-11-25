@@ -26,12 +26,22 @@ class WP_User_Avatar {
     // Add WPUA to profile for users with permission
     if($this->wpua_is_author_or_above() || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
       // Profile functions and scripts
-      add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+      //add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
       add_action('personal_options_update', array($this, 'wpua_action_process_option_update'));
-      add_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+      //add_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
       add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
       add_action('user_new_form', array($this, 'wpua_action_show_user_profile'));
       add_action('user_register', array($this, 'wpua_action_process_option_update'));
+
+        add_filter('user_profile_picture_description', function ($description, $profileuser) {
+            ob_start();
+            echo '<style>.user-profile-picture > td > .avatar {display: none;}</style>';
+            self::wpua_core_show_user_profile($profileuser);
+
+            return ob_get_clean();
+
+        }, 10, 2);
+
       // Admin scripts
       $pages = array('profile.php', 'options-discussion.php', 'user-edit.php', 'user-new.php');
       if(in_array($pagenow, $pages) || $wpua_admin->wpua_is_menu_page()) {
@@ -125,87 +135,102 @@ class WP_User_Avatar {
     }
   }
 
-  /**
-   * Add to edit user profile
-   * @since 1.4
-   * @param object $user
-   * @uses int $blog_id
-   * @uses object $current_user
-   * @uses bool $show_avatars
-   * @uses object $wpdb
-   * @uses object $wp_user_avatar
-   * @uses bool $wpua_allow_upload
-   * @uses bool $wpua_edit_avatar
-   * @uses object $wpua_functions
-   * @uses string $wpua_upload_size_limit_with_units
-   * @uses add_query_arg()
-   * @uses admin_url()
-   * @uses do_action()
-   * @uses get_blog_prefix()
-   * @uses get_user_meta()
-   * @uses get_wp_user_avatar_src()
-   * @uses has_wp_user_avatar()
-   * @uses is_admin()
-   * @uses wpua_author()
-   * @uses wpua_get_avatar_original()
-   * @uses wpua_is_author_or_above()
-   */
-  public static function wpua_action_show_user_profile($user) {
-    global $blog_id, $current_user, $show_avatars, $wpdb, $wp_user_avatar, $wpua_allow_upload, $wpua_edit_avatar, $wpua_functions, $wpua_upload_size_limit_with_units;
-	  
-    $has_wp_user_avatar = has_wp_user_avatar(@$user->ID);
-    // Get WPUA attachment ID
-    $wpua = get_user_meta(@$user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
-    // Show remove button if WPUA is set
-    $hide_remove = !$has_wp_user_avatar ? 'wpua-hide' : "";
-    // Hide image tags if show avatars is off
-    $hide_images = !$has_wp_user_avatar && (bool) $show_avatars == 0 ? 'wpua-no-avatars' : "";
-    // If avatars are enabled, get original avatar image or show blank
-    $avatar_medium_src = (bool) $show_avatars == 1 ? $wpua_functions->wpua_get_avatar_original(@$user->user_email, 'medium') : includes_url().'images/blank.gif';
-    // Check if user has wp_user_avatar, if not show image from above
-    $avatar_medium = $has_wp_user_avatar ? get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
-    // Check if user has wp_user_avatar, if not show image from above
-    $avatar_thumbnail = $has_wp_user_avatar ? get_wp_user_avatar_src($user->ID, 96) : $avatar_medium_src;
-    $edit_attachment_link = esc_url(add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')));
-    // Chck if admin page
-    $is_admin = is_admin() ? '_admin' : "";
-  ?>
-    <?php do_action('wpua_before_avatar'.$is_admin); ?>
-    <input type="hidden" name="wp-user-avatar" id="<?php echo ($user=='add-new-user') ? 'wp-user-avatar' : 'wp-user-avatar-existing'?>" value="<?php echo $wpua; ?>" />
-    <?php if($wp_user_avatar->wpua_is_author_or_above()) : // Button to launch Media Uploader ?>
-      
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-add-button' : 'wpua-add-button-existing'?>"><button type="button" class="button" id="<?php echo ($user=='add-new-user') ? 'wpua-add' : 'wpua-add-existing'?>" name="<?php echo ($user=='add-new-user') ? 'wpua-add' : 'wpua-add-existing'?>" data-title="<?php _e('Choose Image','wp-user-avatar'); ?>: <?php echo ( ! empty( $user->display_name ) ? $user->display_name:''); ?>"><?php _e('Choose Image','wp-user-avatar'); ?></button></p>
+  public static function wpua_core_show_user_profile($user)
+    {
+        global $blog_id, $current_user, $show_avatars, $wpdb, $wp_user_avatar, $wpua_edit_avatar, $wpua_functions, $wpua_upload_size_limit_with_units;
 
-    <?php elseif(!$wp_user_avatar->wpua_is_author_or_above()) : // Upload button ?>
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-upload-button' : 'wpua-upload-button-existing'?>">
-        <input name="wpua-file" id="<?php echo ($user=='add-new-user') ? 'wpua-file' : 'wpua-file-existing'?>" type="file" />
-        <button type="submit" class="button" id="<?php echo ($user=='add-new-user') ? 'wpua-upload' : 'wpua-upload-existing'?>" name="submit" value="<?php _e('Upload','wp-user-avatar'); ?>"><?php _e('Upload','wp-user-avatar'); ?></button>
-      </p>
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-upload-messages' : 'wpua-upload-messages-existing'?>">
-        <span id="<?php echo ($user=='add-new-user') ? 'wpua-max-upload' : 'wpua-max-upload-existing'?>" class="description"><?php printf(__('Maximum upload file size: %d%s.','wp-user-avatar'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?></span>
-        <span id="<?php echo ($user=='add-new-user') ? 'wpua-allowed-files' : 'wpua-allowed-files-existing'?>" class="description"><?php _e('Allowed Files','wp-user-avatar'); ?>: <?php _e('<code>jpg jpeg png gif</code>','wp-user-avatar'); ?></span>
-      </p>
+        $has_wp_user_avatar = has_wp_user_avatar(@$user->ID);
+        // Get WPUA attachment ID
+        $wpua = get_user_meta(@$user->ID, $wpdb->get_blog_prefix($blog_id) . 'user_avatar', true);
+        // Show remove button if WPUA is set
+        $hide_remove = ! $has_wp_user_avatar ? 'wpua-hide' : "";
+        // Hide image tags if show avatars is off
+        $hide_images = ! $has_wp_user_avatar && (bool)$show_avatars == 0 ? 'wpua-no-avatars' : "";
+        // If avatars are enabled, get original avatar image or show blank
+        $avatar_medium_src = (bool)$show_avatars == 1 ? $wpua_functions->wpua_get_avatar_original(@$user->user_email, 'medium') : includes_url() . 'images/blank.gif';
+        // Check if user has wp_user_avatar, if not show image from above
+        $avatar_medium = $has_wp_user_avatar ? get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
+        // Check if user has wp_user_avatar, if not show image from above
+        $avatar_thumbnail     = $has_wp_user_avatar ? get_wp_user_avatar_src($user->ID, 96) : $avatar_medium_src;
+        $edit_attachment_link = esc_url(add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')));
+        // Chck if admin page
+        ?>
+        <input type="hidden" name="wp-user-avatar" id="<?php echo ($user == 'add-new-user') ? 'wp-user-avatar' : 'wp-user-avatar-existing' ?>" value="<?php echo $wpua; ?>"/>
+        <?php if ($wp_user_avatar->wpua_is_author_or_above()) : // Button to launch Media Uploader ?>
+
+        <p id="<?php echo ($user == 'add-new-user') ? 'wpua-add-button' : 'wpua-add-button-existing' ?>">
+            <button type="button" class="button" id="<?php echo ($user == 'add-new-user') ? 'wpua-add' : 'wpua-add-existing' ?>" name="<?php echo ($user == 'add-new-user') ? 'wpua-add' : 'wpua-add-existing' ?>" data-title="<?php _e('Choose Image', 'wp-user-avatar'); ?>: <?php echo(! empty($user->display_name) ? $user->display_name : ''); ?>"><?php _e('Choose Image', 'wp-user-avatar'); ?></button>
+        </p>
+
+    <?php elseif ( ! $wp_user_avatar->wpua_is_author_or_above()) : // Upload button ?>
+        <p id="<?php echo ($user == 'add-new-user') ? 'wpua-upload-button' : 'wpua-upload-button-existing' ?>">
+            <input name="wpua-file" id="<?php echo ($user == 'add-new-user') ? 'wpua-file' : 'wpua-file-existing' ?>" type="file"/>
+            <button type="submit" class="button" id="<?php echo ($user == 'add-new-user') ? 'wpua-upload' : 'wpua-upload-existing' ?>" name="submit" value="<?php _e('Upload', 'wp-user-avatar'); ?>"><?php _e('Upload', 'wp-user-avatar'); ?></button>
+        </p>
+        <p id="<?php echo ($user == 'add-new-user') ? 'wpua-upload-messages' : 'wpua-upload-messages-existing' ?>">
+            <span id="<?php echo ($user == 'add-new-user') ? 'wpua-max-upload' : 'wpua-max-upload-existing' ?>" class="description"><?php printf(__('Maximum upload file size: %d%s.', 'wp-user-avatar'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?></span>
+            <span id="<?php echo ($user == 'add-new-user') ? 'wpua-allowed-files' : 'wpua-allowed-files-existing' ?>" class="description"><?php _e('Allowed Files', 'wp-user-avatar'); ?>: <?php _e('<code>jpg jpeg png gif</code>', 'wp-user-avatar'); ?></span>
+        </p>
     <?php endif; ?>
-    <div id="<?php echo ($user=='add-new-user') ? 'wpua-images' : 'wpua-images-existing'?>" class="<?php echo $hide_images; ?>">
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-preview' : 'wpua-preview-existing'?>">
-        <img src="<?php echo $avatar_medium; ?>" alt="" />
-        <span class="description"><?php _e('Original Size','wp-user-avatar'); ?></span>
-      </p>
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-thumbnail' : 'wpua-thumbnail-existing'?>">
-        <img src="<?php echo $avatar_thumbnail; ?>" alt="" />
-        <span class="description"><?php _e('Thumbnail','wp-user-avatar'); ?></span>
-      </p>
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-remove-button' : 'wpua-remove-button-existing'?>" class="<?php echo $hide_remove; ?>">
-        <button type="button" class="button" id="<?php echo ($user=='add-new-user') ? 'wpua-remove' : 'wpua-remove-existing'?>" name="wpua-remove"><?php _e('Remove Image','wp-user-avatar'); ?></button>
-        <?php if((bool) $wpua_edit_avatar == 1 && !$wp_user_avatar->wpua_is_author_or_above() && has_wp_user_avatar($current_user->ID) && $wp_user_avatar->wpua_author($wpua, $current_user->ID)) : // Edit button ?>
-          <span id="<?php echo ($user=='add-new-user') ? 'wpua-edit-attachment' : 'wpua-edit-attachment-existing'?>"><a href="<?php echo $edit_attachment_link; ?>" class="edit-attachment" target="_blank"><?php _e('Edit Image','wp-user-avatar'); ?></a></span>
-        <?php endif; ?>
-      </p>
-      <p id="<?php echo ($user=='add-new-user') ? 'wpua-undo-button' : 'wpua-undo-button-existing'?>"><button type="button" class="button" id="<?php echo ($user=='add-new-user') ? 'wpua-undo' : 'wpua-undo-existing'?>" name="wpua-undo"><?php _e('Undo','wp-user-avatar'); ?></button></p>
-    </div>
-    <?php do_action('wpua_after_avatar'.$is_admin); ?>
-  <?php
-  }
+        <div id="<?php echo ($user == 'add-new-user') ? 'wpua-images' : 'wpua-images-existing' ?>" class="<?php echo $hide_images; ?>">
+            <p id="<?php echo ($user == 'add-new-user') ? 'wpua-preview' : 'wpua-preview-existing' ?>">
+                <img src="<?php echo $avatar_medium; ?>" alt=""/>
+                <span class="description"><?php _e('Original Size', 'wp-user-avatar'); ?></span>
+            </p>
+            <p id="<?php echo ($user == 'add-new-user') ? 'wpua-thumbnail' : 'wpua-thumbnail-existing' ?>">
+                <img src="<?php echo $avatar_thumbnail; ?>" alt=""/>
+                <span class="description"><?php _e('Thumbnail', 'wp-user-avatar'); ?></span>
+            </p>
+            <p id="<?php echo ($user == 'add-new-user') ? 'wpua-remove-button' : 'wpua-remove-button-existing' ?>" class="<?php echo $hide_remove; ?>">
+                <button type="button" class="button" id="<?php echo ($user == 'add-new-user') ? 'wpua-remove' : 'wpua-remove-existing' ?>" name="wpua-remove"><?php _e('Remove Image', 'wp-user-avatar'); ?></button>
+                <?php if ((bool)$wpua_edit_avatar == 1 && ! $wp_user_avatar->wpua_is_author_or_above() && has_wp_user_avatar($current_user->ID) && $wp_user_avatar->wpua_author($wpua, $current_user->ID)) : // Edit button ?>
+                    <span id="<?php echo ($user == 'add-new-user') ? 'wpua-edit-attachment' : 'wpua-edit-attachment-existing' ?>"><a href="<?php echo $edit_attachment_link; ?>" class="edit-attachment" target="_blank"><?php _e('Edit Image', 'wp-user-avatar'); ?></a></span>
+                <?php endif; ?>
+            </p>
+            <p id="<?php echo ($user == 'add-new-user') ? 'wpua-undo-button' : 'wpua-undo-button-existing' ?>">
+                <button type="button" class="button" id="<?php echo ($user == 'add-new-user') ? 'wpua-undo' : 'wpua-undo-existing' ?>" name="wpua-undo"><?php _e('Undo', 'wp-user-avatar'); ?></button>
+            </p>
+        </div>
+        <?php
+    }
+
+    /**
+     * Add to edit user profile
+     *
+     * @param object $user
+     *
+     * @since 1.4
+     * @uses int $blog_id
+     * @uses object $current_user
+     * @uses bool $show_avatars
+     * @uses object $wpdb
+     * @uses object $wp_user_avatar
+     * @uses bool $wpua_edit_avatar
+     * @uses object $wpua_functions
+     * @uses string $wpua_upload_size_limit_with_units
+     * @uses add_query_arg()
+     * @uses admin_url()
+     * @uses do_action()
+     * @uses get_blog_prefix()
+     * @uses get_user_meta()
+     * @uses get_wp_user_avatar_src()
+     * @uses has_wp_user_avatar()
+     * @uses is_admin()
+     * @uses wpua_author()
+     * @uses wpua_get_avatar_original()
+     * @uses wpua_is_author_or_above()
+     */
+    public static function wpua_action_show_user_profile($user)
+    {
+        $is_admin = is_admin() ? '_admin' : "";
+
+        do_action('wpua_before_avatar' . $is_admin);
+
+        self::wpua_core_show_user_profile($user);
+
+        do_action('wpua_after_avatar' . $is_admin); ?>
+        <?php
+    }
 
   /**
    * Add upload error messages
@@ -410,7 +435,7 @@ class WP_User_Avatar {
         }
       }
     }
-	
+
   }
 
   /**
@@ -420,7 +445,7 @@ class WP_User_Avatar {
    * @param int $user_id
    * @param bool $wpua_author
    * @uses get_post()
-   * @return bool 
+   * @return bool
    */
   private function wpua_author($attachment_id, $user_id, $wpua_author=0) {
     $attachment = get_post($attachment_id);

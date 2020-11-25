@@ -76,7 +76,7 @@ function wpua_after_avatar() {
  * @uses wpuf_has_shortcode()
  */
 function wpua_do_before_avatar() {
-  $wpua_profile_title = '<h3>'.__('Avatar','wp-user-avatar').'</h3>';
+  $wpua_profile_title = '<h3>'.__('Profile Picture','wp-user-avatar').'</h3>';
   /**
    * Filter profile title
    * @since 1.9.4
@@ -85,12 +85,12 @@ function wpua_do_before_avatar() {
   $wpua_profile_title = apply_filters('wpua_profile_title', $wpua_profile_title);
 ?>
   <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
-    <h2 class="entry-title"><?php _e('Avatar','wp-user-avatar'); ?></h2>
+    <h2 class="entry-title"><?php _e('Profile Picture','wp-user-avatar'); ?></h2>
     <fieldset class="bbp-form">
       <legend><?php _e('Image','wp-user-avatar'); ?></legend>
   <?php elseif(class_exists('WPUF_Main') && wpuf_has_shortcode('wpuf_editprofile')) : // Add to WP User Frontend profile with same style ?>
     <fieldset>
-      <legend><?php _e('Avatar','wp-user-avatar') ?></legend>
+      <legend><?php _e('Profile Picture','wp-user-avatar') ?></legend>
       <table class="wpuf-table">
         <tr>
           <th><label for="wp_user_avatar"><?php _e('Image','wp-user-avatar'); ?></label></th>
@@ -149,10 +149,9 @@ function wpua_after_avatar_admin() {
  */
 function wpua_do_before_avatar_admin() {
 ?>
-  <h3><?php _e('Avatar') ?></h3>
   <table class="form-table">
     <tr>
-      <th><label for="wp_user_avatar"><?php _e('Image','wp-user-avatar'); ?></label></th>
+      <th><label for="wp_user_avatar"><?php _e('Profile Picture','wp-user-avatar'); ?></label></th>
       <td>
   <?php
 }

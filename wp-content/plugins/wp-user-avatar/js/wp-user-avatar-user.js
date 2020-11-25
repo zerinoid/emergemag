@@ -5,6 +5,7 @@ jQuery(function($) {
   var wpuaID = $('#wp-user-avatar').val();
   // Store WP User Avatar src
   var wpuaSrc = $('#wpua-preview').find('img').attr('src');
+  $('#wpua-undo-button-existing').hide();
   // Remove WP User Avatar
   $('body').on('click', '#wpua-remove', function(e) {
     e.preventDefault();

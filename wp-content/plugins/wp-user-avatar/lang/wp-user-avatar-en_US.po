@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP USER AVATAR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-22 11:23+0100\n"
-"PO-Revision-Date: 2020-04-22 11:27+0100\n"
+"POT-Creation-Date: 2020-11-23 07:02+0100\n"
+"PO-Revision-Date: 2020-11-23 07:02+0100\n"
 "Last-Translator: ProfilePress <https://profilepress.net/>\n"
 "Language-Team: ProfilePress <https://profilepress.net/>\n"
 "Language: en_US\n"
@@ -67,7 +67,7 @@ msgid "Retro (Generated)"
 msgstr ""
 
 #: includes/class-wp-user-avatar-admin.php:267
-#: includes/class-wp-user-avatar.php:177
+#: includes/class-wp-user-avatar.php:162
 msgid "Choose Image"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgid "Remove"
 msgstr ""
 
 #: includes/class-wp-user-avatar-admin.php:268
-#: includes/class-wp-user-avatar.php:204
+#: includes/class-wp-user-avatar.php:191
 msgid "Undo"
 msgstr ""
 
@@ -91,12 +91,14 @@ msgid "Support Forums"
 msgstr ""
 
 #: includes/class-wp-user-avatar-admin.php:324
-#: includes/class-wp-user-avatar-admin.php:378
+#: includes/class-wp-user-avatar-admin.php:378 includes/tinymce/window.php:123
+#: includes/wpua-functions.php:79 includes/wpua-functions.php:88
+#: includes/wpua-functions.php:93 includes/wpua-functions.php:154
+msgid "Profile Picture"
+msgstr ""
+
 #: includes/class-wp-user-avatar-functions.php:439
 #: includes/class-wp-user-avatar-functions.php:590
-#: includes/tinymce/window.php:123 includes/wpua-functions.php:79
-#: includes/wpua-functions.php:88 includes/wpua-functions.php:93
-#: includes/wpua-functions.php:152
 msgid "Avatar"
 msgstr ""
 
@@ -171,10 +173,6 @@ msgstr ""
 msgid "Update Profile"
 msgstr ""
 
-#: includes/class-wp-user-avatar-subscriber.php:99
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
 #: includes/class-wp-user-avatar-widget.php:15
 msgid "Insert"
 msgstr ""
@@ -195,53 +193,73 @@ msgstr ""
 msgid "Automatically add paragraphs"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:182 includes/tinymce/window.php:124
+#: includes/class-wp-user-avatar.php:168 includes/tinymce/window.php:124
 #: includes/tinymce/window.php:196
 msgid "Upload"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:185 includes/wpua-options-page.php:124
+#: includes/class-wp-user-avatar.php:171 includes/wpua-options-page.php:124
 #, php-format
 msgid "Maximum upload file size: %d%s."
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:186
+#: includes/class-wp-user-avatar.php:172
 msgid "Allowed Files"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:186
+#: includes/class-wp-user-avatar.php:172
 msgid "<code>jpg jpeg png gif</code>"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:192 includes/tinymce/window.php:142
+#: includes/class-wp-user-avatar.php:178 includes/tinymce/window.php:142
 msgid "Original Size"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:196 includes/tinymce/window.php:145
+#: includes/class-wp-user-avatar.php:182 includes/tinymce/window.php:145
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:199
+#: includes/class-wp-user-avatar.php:185
 msgid "Remove Image"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:201
+#: includes/class-wp-user-avatar.php:187
 msgid "Edit Image"
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:228
+#: includes/class-wp-user-avatar.php:253
 msgid "This file is not an image. Please try another."
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:232 includes/class-wp-user-avatar.php:258
+#: includes/class-wp-user-avatar.php:257 includes/class-wp-user-avatar.php:283
 msgid "Memory exceeded. Please try another smaller file."
 msgstr ""
 
-#: includes/class-wp-user-avatar.php:236
+#: includes/class-wp-user-avatar.php:261
 #, php-format
 msgid ""
 "Unable to create directory %s. Is its parent directory writable by the "
 "server?"
+msgstr ""
+
+#: includes/mo-notice.php:60
+#, php-format
+msgid ""
+"Free optin form plugin that will increase revenue, %1$sincrease your email "
+"subscribers%2$s and keep them engaged with %1$sautomated and schedule "
+"newsletters%2$s."
+msgstr ""
+
+#: includes/mo-notice.php:69
+msgid "Install MailOptin Now for Free!"
+msgstr ""
+
+#: includes/mo-notice.php:74
+msgid "Activate MailOptin Now!"
+msgstr ""
+
+#: includes/mo-notice.php:83
+msgid "Dismiss this notice"
 msgstr ""
 
 #: includes/tinymce/window.php:129
@@ -313,7 +331,6 @@ msgid "Insert into Post"
 msgstr ""
 
 #: includes/wpua-functions.php:90 includes/wpua-functions.php:96
-#: includes/wpua-functions.php:155
 msgid "Image"
 msgstr ""
 

@@ -1493,7 +1493,7 @@ if ( ! class_exists( 'Codevz_Theme' ) ) {
 						global $post;
 						$pdate = strtotime( $post->post_date );
 
-						echo '<' . esc_attr( $page_title_tag ) . ' class="xtra-post-title section_title">' . get_the_title() . '<span class="xtra-post-title-date"><a href="' . get_day_link( date( 'Y', $pdate ), date( 'm', $pdate ), date( 'd', $pdate ) ) . '"><time datetime="' . esc_attr( get_the_date( 'c' ) ) . '" itemprop="datePublished"><i class="far fa-clock mr8"></i>' . esc_html( get_the_date() ) . '</time></a></span></' . esc_attr( $page_title_tag ) . '>';
+						echo '<' . esc_attr( $page_title_tag ) . ' class="xtra-post-title section_title">' . get_the_title() . '<span class="xtra-post-title-date"><a href="' . get_day_link( date( 'Y', $pdate ), date( 'm', $pdate ), date( 'd', $pdate ) ) . '"><time datetime="' . esc_attr( get_the_date( 'c' ) ) . '" itemprop="datePublished"><i class="far fa-clock mr8"></i>' . esc_html( get_the_date() ) . '</time></a><a id="post-author" href="#"> Escrito por ' . get_the_author() .'</a></span></' . esc_attr( $page_title_tag ) . '>';
 
 					}
 

@@ -85,7 +85,7 @@ class WPvivid_Backup_Task
                 $exclude_regex[]='#^'.preg_quote($this -> transfer_path(WP_CONTENT_DIR).DIRECTORY_SEPARATOR.WPVIVID_UPLOADS_ISO_DIR, '/').'#';
             }
             $upload_dir = wp_upload_dir();
-            $exclude_regex[]='#^'.preg_quote($this -> transfer_path($upload_dir['basedir']), '/').'#';
+            $exclude_regex[]='#^'.preg_quote($this -> transfer_path($upload_dir['basedir']), '/').'$#';
             $exclude_regex[]='#^'.preg_quote($this->transfer_path(get_theme_root()), '/').'#';
         }
 

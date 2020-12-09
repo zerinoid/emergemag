@@ -2,9 +2,9 @@
 Contributors: wpvivid
 Tags: move, clone, migrate, cleaner, backup, restore, auto backup, cloud backup
 Requires at least: 4.5
-Tested up to: 5.5.1
+Tested up to: 5.5.3
 Requires PHP: 5.3
-Stable tag: 0.9.46
+Stable tag: 0.9.47
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -185,6 +185,12 @@ Thank you for translating WPvivid Backup Plugin to your languages!
 * Valentin Lyong (Bulgarian)
 
 == Changelog ==
+= 0.9.47 =
+- Added support for Amazon S3 South Africa region.
+- Fixed: Folder would not be backed up when it's name matches regex: ^uploads.*$.
+- Successfully tested with WordPress 5.5.3.
+- Fixed some bugs in the plugin code.
+- Optimized the plugin code.
 = 0.9.46 =
 - Fixed: Some special characters in database could not be restored properly.
 - Fixed: Only 1000 backups stored on Amazon S3 could be displayed.

@@ -931,7 +931,7 @@ class WPvivid_RestoreDB
                             $update=array();
                             $where=array();
 
-                            if($row['site_id']==1)
+                            if($row['blog_id']==1)
                             {
                                 $old_path=$row['path'];
                             }

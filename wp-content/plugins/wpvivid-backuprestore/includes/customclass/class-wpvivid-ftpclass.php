@@ -278,7 +278,12 @@ class WPvivid_FTPClass extends WPvivid_Remote{
         $passive =$this->options['passive'];
         $host = $this->options['host'];
         $username = $this->options['username'];
-        $password = $this->options['password'];
+        if(isset($this->options['is_encrypt']) && $this->options['is_encrypt'] == 1){
+            $password = base64_decode($this->options['password']);
+        }
+        else {
+            $password = $this->options['password'];
+        }
         $path = $this->options['path'];
         $port = empty($this->options['port'])?21:$this->options['port'];
         $conn = $this -> do_connect($host,$username,$password,$port);
@@ -437,7 +442,12 @@ class WPvivid_FTPClass extends WPvivid_Remote{
         $passive =$this->options['passive'];
         $host = $this->options['host'];
         $username = $this->options['username'];
-        $password = $this->options['password'];
+        if(isset($this->options['is_encrypt']) && $this->options['is_encrypt'] == 1){
+            $password = base64_decode($this->options['password']);
+        }
+        else {
+            $password = $this->options['password'];
+        }
         $path = $this->options['path'];
         $port = empty($this->options['port'])?21:$this->options['port'];
 
@@ -546,7 +556,12 @@ class WPvivid_FTPClass extends WPvivid_Remote{
             $passive = $this->options['passive'];
             $host = $this->options['host'];
             $username = $this->options['username'];
-            $password = $this->options['password'];
+            if(isset($this->options['is_encrypt']) && $this->options['is_encrypt'] == 1){
+                $password = base64_decode($this->options['password']);
+            }
+            else {
+                $password = $this->options['password'];
+            }
             $path = $this->options['path'];
             $port = empty($this->options['port']) ? 21 : $this->options['port'];
 
@@ -616,7 +631,12 @@ class WPvivid_FTPClass extends WPvivid_Remote{
 	public function cleanup($file){
         $host = $this->options['host'];
         $username = $this->options['username'];
-        $password = $this->options['password'];
+        if(isset($this->options['is_encrypt']) && $this->options['is_encrypt'] == 1){
+            $password = base64_decode($this->options['password']);
+        }
+        else {
+            $password = $this->options['password'];
+        }
         $path = $this->options['path'];
         $port = empty($this->options['port'])?21:$this->options['port'];
 
